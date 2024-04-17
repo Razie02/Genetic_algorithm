@@ -1,0 +1,34 @@
+import random
+
+def fitness_function(solution):
+    return sum(solution)
+
+def initialize_population(population_size, num_genes):
+    return [[random.randint(0, 1) for _ in range(num_genes)] for _ in range(population_size)]
+
+def genetic_algorithm(population_size, num_genes, generations):
+    population = initialize_population(population_size, num_genes)
+    for _ in range(generations):
+        fitness_scores = [fitness_function(individual) for individual in population]
+        
+        parents = random.choices(population, weights=fitness_scores, k=2)
+        
+        crossover_point = random.randint(1, num_genes - 1)
+        child = parents[0][:crossover_point] + parents[1][crossover_point:]
+      
+        mutation_rate = 0.1
+        if random.random() < mutation_rate:
+            mutate_index = random.randint(0, num_genes - 1)
+            child[mutate
+
+        worst_index = fitness_scores.index(min(fitness_scores))
+        population[worst_index] = child
+    
+    best_individual = population[fitness_scores.index(max(fitness_scores))]
+    return best_individual
+
+population_size = 100
+num_genes = 14
+generations = 100
+best_solution = genetic_algorithm(population_size, num_genes, generations)
+print(best_solution)
